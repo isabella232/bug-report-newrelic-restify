@@ -22,29 +22,46 @@ This example responds to every `/` request with the same code path:
 Given the above, the total request takes `350ms`.
 There is also a small `50ms` delay that isn't part of any tracer.
 
-## What we see
 
-NewRelic picks up the `/` transaction successfully, but displays it as:
+## NewRelic Node agent 1.16.4
+
+In the previous version of the Node agent (`1.16.4`), this is what is captured:
+
+![Agent 1.16 chart](screenshot-1-16-chart.png)
+
+- You can notice a small bug where the *top-level* transaction is duplicated, in yellow and teal
+  - this bug is fixed in version `1.17.0`
+
+- All tracers are displayed as stacked areas
+  - this is a tricky one to solve, because in `Node` tracers could be in series, in parallel, or even overlap with each other.
+  - a stacked display is probably fine as long as it's clear we're looking at tracers
+  - one potential option is to display them differently from the top-level transaction, for example as **lines** if the transaction time is an area
+
+- The top level transaction, in yellow, is stacked above all the tracers
+  - this makes it quite hard to read, because looking at the `Y` axis, it seems the average is `750ms`
+  - ideally, the transaction would be plotted as a **non-stacked** area, regardless of the tracers, so the `Y`-value is always relevant and can be read at a glance
+  - I note that we can read the **real** average in the top-right (`323ms`). While that's nice, it's not enough to inspect the fluctuations, peaks and trophs in the current time window.
+
+In the breakdown, everything look great:
+
+![Agent 1.16 breakdown](screenshot-1-16-breakdown.png)
+
+The top-level transaction here displays the right time, and is marked correctly as taking `100%` of the time.
+
+Again, the person reading this should consider that tracers could have executed in parallel, or even been skipped in some instances, but it provides a lot of value to compare them relatively to each other.
+
+## NewRelic Node agent 1.17.0
+
+This is where it got interesting:
 
 ![screenshot](screenshot-chart.png)
 
-- All tracers are picked up
-- They are displayed as stacked values, which doesn't represent the async reality, but I don't think there is an easy solution to that. Knowing that they are tracers, it's up to the person reading the graphs to know **not** to add them up. However this is still useful to compare how long they take relative to each other
-- The total `GET /` blue entry doesn't appear on the chart. We have other cases where it **did** appear, and represented the "remainder" time after the tracers, in our case `50ms`. I'm not sure why this case is different.
+- all tracers are still picked up, displayed as stacked values
+- but the top-level `get /` entry disappeared?
+- we've also had cases where the top-level transaction **did** appear, but instead of the whole response time it represented the "remainder" time after the tracers, so in this case `50ms`. I'm not sure why it disappeared this particular time
 
 The breakdown is similar:
 
 ![screenshot](screenshot-breakdown.png)
 
-Note that we can still see the total average time (`346ms`) in the top right. However, in a real-world scenario where the transaction & tracer times will vary a lot over time, we lost the ability to see the fluctuations, peaks and troughs in the current time window.
-
-**Note**: in the previous version of the Node agent (1.16), the blue line represented the whole transaction, and was plotted as another stacked area on the chart. This was hard to read, because the `Y`-value was much higher than the actual value (since it was stacked), but at least it was represented on the chart and the breakdown table with the actual full-end-to-end transaction duration.
-
-## What we would like to see
-
-Ideally, both the total transaction and tracers would be shown.
-
-- the total transaction as a solid chart, anchored at the bottom of the Y axis. This means we can
-  - see its fluctuations over time
-  - hover to see the exact total times
-- the tracers as lines on the chart, so it's obvious they should not be added to the total response time. They could potentially be stacked or not, which doesn't matter since neither will represent the fact they can be in series, parallel, or even overlap in an async world.
+As before, we can still read the **actual** full transaction time in the top-right, however this only represents an average. Being able to read the fluctuations on the graphs was very valuable information.
