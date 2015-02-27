@@ -25,7 +25,7 @@ There is also a small `50ms` delay that isn't part of any tracer.
 
 ## NewRelic Node agent 1.16.4
 
-In the previous version of the Node agent (`1.16.4`), this is what is captured:
+In the previous version of the Node agent (`1.16.4`), this is what was captured:
 
 ![Agent 1.16 chart](screenshot-1-16-chart.png)
 
@@ -42,19 +42,19 @@ In the previous version of the Node agent (`1.16.4`), this is what is captured:
   - ideally, the transaction would be plotted as a **non-stacked** area, regardless of the tracers, so the `Y`-value is always relevant and can be read at a glance
   - I note that we can read the **real** average in the top-right (`323ms`). While that's nice, it's not enough to inspect the fluctuations, peaks and trophs in the current time window.
 
-In the breakdown, everything look great:
+In the breakdown, everything looks great:
 
 ![Agent 1.16 breakdown](screenshot-1-16-breakdown.png)
 
-The top-level transaction here displays the right time, and is marked correctly as taking `100%` of the time.
+The top-level transaction here displays the right time (`323ms`), and is marked correctly as taking `100%` of the time.
 
-Again, the person reading this should consider that tracers could have executed in parallel, or even been skipped in some instances, but it provides a lot of value to compare them relatively to each other.
+Again, the person reading this should consider that tracers could have executed in parallel, or even been skipped in some instances... but it still provides a lot of value to compare them relatively to each other.
 
 ## NewRelic Node agent 1.17.0
 
-This is where it got interesting:
+That's where it got interesting:
 
-![screenshot](screenshot-chart.png)
+![Agent 1.17 chart](screenshot-1-17-chart.png)
 
 - all tracers are still picked up, displayed as stacked values
 - but the top-level `get /` entry disappeared?
@@ -62,6 +62,6 @@ This is where it got interesting:
 
 The breakdown is similar:
 
-![screenshot](screenshot-breakdown.png)
+![Agent 1.17 breakdown](screenshot-1-17-breakdown.png)
 
 As before, we can still read the **actual** full transaction time in the top-right, however this only represents an average. Being able to read the fluctuations on the graphs was very valuable information.
