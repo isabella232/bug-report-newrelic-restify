@@ -30,7 +30,7 @@ NewRelic picks up the `/` transaction successfully, but displays it as:
 
 - All tracers are picked up
 - They are displayed as stacked values, which doesn't represent the async reality, but I don't think there is an easy solution to that. Knowing that they are tracers, it's up to the person reading the graphs to know **not** to add them up. However this is still useful to compare how long they take relative to each other
-- The total `GET /` blue entry doesn't appear on the chart. We have other cases where it **did** appear, and represented the "remainder" time after the tracers, in our case `50ms`. I'm not sure what this case is different.
+- The total `GET /` blue entry doesn't appear on the chart. We have other cases where it **did** appear, and represented the "remainder" time after the tracers, in our case `50ms`. I'm not sure why this case is different.
 
 The breakdown is similar:
 
