@@ -36,7 +36,7 @@ The breakdown is similar:
 
 ![screenshot](screenshot-breakdown.png)
 
-Note that we can still see the total average time (`350ms`) in the top right. However, in a real-world scenario where the transaction & tracer times vary, we lost the ability to see the fluctuations, peaks and troughs over time.
+Note that we can still see the total average time (`346ms`) in the top right. However, in a real-world scenario where the transaction & tracer times will vary a lot over time, we lost the ability to see the fluctuations, peaks and troughs in the current time window.
 
 **Note**: in the previous version of the Node agent (1.16), the blue line represented the whole transaction, and was plotted as another stacked area on the chart. This was hard to read, because the `Y`-value was much higher than the actual value (since it was stacked), but at least it was represented on the chart and the breakdown table with the actual full-end-to-end transaction duration.
 
