@@ -56,12 +56,15 @@ That's where it got interesting:
 
 ![Agent 1.17 chart](screenshot-1-17-chart.png)
 
+- the duplicate bug was fixed
 - all tracers are still picked up, displayed as stacked values
-- but the top-level `get /` entry disappeared?
-- we've also had cases where the top-level transaction **did** appear, but instead of the whole response time it represented the "remainder" time after the tracers, so in this case `50ms`. I'm not sure why it disappeared this particular time
+- but the top-level (blue) `get /` entry isn't plotted?
+- we've also had cases where the top-level transaction **did** appear, but instead of the whole response time it represented the "remainder" time after the tracers, so in this case `50ms`. I'm not sure why it disappeared this particular time.
 
 The breakdown is similar:
 
 ![Agent 1.17 breakdown](screenshot-1-17-breakdown.png)
+
+- in the other cases where `get /` was plotted, it also appeared in the breakdown table, but again its value was the remainder, so around `50ms`, instead of the full `323ms`
 
 As before, we can still read the **actual** full transaction time in the top-right, however this only represents an average. Being able to read the fluctuations on the graphs was very valuable information.
